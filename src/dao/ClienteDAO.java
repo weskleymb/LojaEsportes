@@ -107,6 +107,28 @@ public class ClienteDAO {
         return null;
     }
     
+    public Cliente buscarPorId(int id) {
+        db.conectar();
+        String sql = "SELECT * FROM TB_CLIENTES WHERE CLI_ID = ?";
+        try {
+            ps = db.getConexao().prepareStatement(sql);
+            ps.setInt(1, id);
+            rs = ps.executeQuery();
+            if (rs.next()) {
+                Cliente cliente = new Cliente();
+                cliente.setId(rs.getInt("CLI_ID"));
+                cliente.setCpf(rs.getString("CLI_CPF"));
+                cliente.setNome(rs.getString("CLI_NOME"));
+                cliente.setNascimento(rs.getDate("CLI_NASCIMENTO"));
+                return cliente;
+            }
+        } catch(SQLException error) {
+            System.out.println("ERRO: " + error.toString());
+        }
+        db.desconectar();
+        return null;
+    }
+    
     public List<Cliente> buscarPorNome(String nome) {
         db.conectar();
         List<Cliente> clientes = new ArrayList<>();
