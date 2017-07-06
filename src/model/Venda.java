@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class Venda {
@@ -8,7 +9,7 @@ public class Venda {
     private int id;
     private Cliente cliente;
     private List<Produto> produtos;
-    private Calendar data;
+    private Date data;
     private float valor;
 
     public int getId() {
@@ -35,11 +36,11 @@ public class Venda {
         this.produtos = produtos;
     }
 
-    public Calendar getData() {
+    public Date getData() {
         return data;
     }
 
-    public void setData(Calendar data) {
+    public void setData(Date data) {
         this.data = data;
     }
 

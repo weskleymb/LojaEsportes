@@ -5,7 +5,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import model.Produto;
@@ -44,7 +43,7 @@ public class VendaDAO {
                 ps.executeUpdate();
             }
         } catch(SQLException error) {
-            System.out.println("Erro1: " + error.toString());
+            System.out.println("Erro: " + error.toString());
         }
         db.desconectar();
     }
@@ -57,14 +56,10 @@ public class VendaDAO {
             ps = db.getConexao().prepareStatement(sql);
             ps.setInt(1, id);
             rs = ps.executeQuery();
-            if (rs.next()) {
-               Date data = rs.getDate("VEN_DATA");
-               Calendar calendario = Calendar.getInstance();
-               calendario.setTime(data);
-                
+            if (rs.next()) { 
                venda.setId(rs.getInt("VEN_ID"));
                venda.setCliente(new ClienteDAO().buscarPorId(rs.getInt("VEN_CLI_ID")));
-               venda.setData(calendario);
+               venda.setData(rs.getDate("VEN_DATA"));
                venda.setValor(rs.getFloat("VEN_VALOR"));
             }
             sql = "SELECT * FROM TB_ITENS_VENDAS WHERE IDV_VEN_ID = ?";
@@ -76,11 +71,33 @@ public class VendaDAO {
                 produtos.add(new ProdutoDAO().buscarPorId(rs.getInt("IDV_PRO_ID")));
             }
             venda.setProdutos(produtos);
+            db.desconectar();
             return venda;
         } catch(SQLException error) {
             System.out.println("Erro: " + error.toString());
+        } finally {
+            db.desconectar();
         }
-        db.desconectar();
+        return null;
+    }
+    
+    public List<Venda> buscarTodos() {
+        //db.conectar();
+        try {
+            List<Venda> vendas = new ArrayList<>();
+            String sql = "SELECT * FROM TB_VENDAS";
+            ps = db.getConexao().prepareStatement(sql);
+            rs = ps.executeQuery();
+            while (rs.next()) {
+                vendas.add(new VendaDAO().buscarPorId(rs.getInt("VEN_ID")));
+            }
+            db.desconectar();
+            return vendas;
+        } catch(SQLException error) {
+            System.out.println("Erro: " + error);
+        } finally {
+            db.desconectar();
+        }
         return null;
     }
     

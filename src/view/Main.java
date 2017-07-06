@@ -15,9 +15,10 @@ public class Main {
     
     public static void main(String[] args) {
         
-        Venda venda = new VendaDAO().buscarPorId(5);
-        
-        System.out.println(venda.getData().get(Calendar.DATE));
+        for (Venda venda : new VendaDAO().buscarTodos()) {
+            System.out.println(venda);
+        }
+//        System.out.println(new VendaDAO().buscarTodos());
         
     }
     

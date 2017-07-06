@@ -97,12 +97,14 @@ public class ProdutoDAO {
                 produto.setNome(rs.getString("PRO_NOME"));
                 produto.setPreco(rs.getFloat("PRO_PRECO"));
                 produto.setEstoque(rs.getInt("PRO_ESTOQUE"));
+                db.desconectar();
                 return produto;
             }
         } catch(SQLException error) {
             System.out.println("ERRO: " + error.toString());
+        } finally {
+            db.desconectar();
         }
-        db.desconectar();
         return null;
     }
     

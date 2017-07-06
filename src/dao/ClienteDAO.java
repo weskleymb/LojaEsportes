@@ -29,8 +29,9 @@ public class ClienteDAO {
             ps.executeUpdate();
         } catch(SQLException error) {
             System.out.println("ERRO: " + error.toString());
+        } finally {
+            db.desconectar();
         }
-        db.desconectar();
     }
     
     public void atualizar(Cliente cliente) {
@@ -80,8 +81,9 @@ public class ClienteDAO {
             return clientes;
         } catch(SQLException error) {
             System.out.println("ERRO: " + error.toString());
+        } finally {
+            db.desconectar();
         }
-        db.desconectar();
         return null;
     }
     
@@ -120,12 +122,14 @@ public class ClienteDAO {
                 cliente.setCpf(rs.getString("CLI_CPF"));
                 cliente.setNome(rs.getString("CLI_NOME"));
                 cliente.setNascimento(rs.getDate("CLI_NASCIMENTO"));
+                db.desconectar();
                 return cliente;
             }
         } catch(SQLException error) {
             System.out.println("ERRO: " + error.toString());
+        } finally {
+            db.desconectar();
         }
-        db.desconectar();
         return null;
     }
     
